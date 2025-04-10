@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Denoising</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            width: 90%;
+            max-width: 800px;
+            margin: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #4a148c;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-container {
+            border: 2px dashed #7c4dff;
+            padding: 40px;
+            margin: 30px 0;
+            border-radius: 12px;
+            background-color: rgba(124, 77, 255, 0.05);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .upload-container:hover {
+            border-color: #4a148c;
+            background-color: rgba(124, 77, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        h2 {
+            font-size: 1.5em;
+            font-weight: 500;
+            color: #512da8;
+            margin-bottom: 25px;
+        }
+
+        .file-label {
+            background: linear-gradient(45deg, #7c4dff, #512da8);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+        }
+
+        .file-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(124, 77, 255, 0.4);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #512da8, #311b92);
+            color: white;
+            padding: 14px 35px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 25px;
+            box-shadow: 0 4px 15px rgba(81, 45, 168, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(81, 45, 168, 0.4);
+        }
+
+        #file-name {
+            margin: 15px 0;
+            color: #512da8;
+            font-weight: 500;
+        }
+
+        .loading {
+            display: none;
+            margin: 25px auto;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(124, 77, 255, 0.1);
+            border-top: 4px solid #7c4dff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading p {
+            color: #512da8;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Audio Denoising Tool</h1>
+        <div class="upload-container">
+            <form id="denoiseForm" action="/denoise" method="post" enctype="multipart/form-data">
+                <h2>Upload Audio File</h2>
+                <label for="file-input" class="file-label">Choose Audio File</label>
+                <input id="file-input" type="file" name="file" accept="audio/*" required>
+                <div id="file-name"></div>
+                <button type="submit" class="btn">Denoise Audio</button>
+            </form>
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Processing your audio file...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('file-input').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'No file selected';
+            document.getElementById('file-name').textContent = fileName;
+        });
+
+        document.getElementById('denoiseForm').addEventListener('submit', function() {
+            document.querySelector('.loading').style.display = 'block';
+            document.querySelector('.btn').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
